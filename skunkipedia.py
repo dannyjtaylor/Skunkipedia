@@ -1,33 +1,19 @@
-#!/usr/bin/env python3
-"""
-Skunkipedia CLI
-A simple interactive dictionary for the IT department to look up cost centers
-and the Windows Activation Key. 
-
-Author: Your Name
-Date:   2025-08-07
-"""
-
 import os
 import sys
 import time
-
-# Windows-specific modules
+import msvcrt
+import pyperclip
 try:
-    import msvcrt  # for press-any-key on Windows
+    import msvcrt 
 except ImportError:
     msvcrt = None
 
-# Optional clipboard support
 try:
     import pyperclip
     CLIPBOARD_AVAILABLE = True
 except ImportError:
     CLIPBOARD_AVAILABLE = False
 
-# -------------------------------------------------------------------
-# Data Definitions
-# -------------------------------------------------------------------
 COST_CENTERS = {
     "728": {
         "Department": "Library Services (Library)",
@@ -41,7 +27,10 @@ COST_CENTERS = {
     }
 }
 
-WINDOWS_KEY = "39391-239291-29291"
+WINDOWS_11_KEY = "MVHNP-G8632-B482B-QDW8D-QRR8R"
+WINDOWS_10_KEY = "MVHNP-G8632-B482B-QDW8D-QRR8R"
+WINDOWS_8_1_KEY = "MPXWC-7CN4B-64FCB-9T69B-F9BDQ"
+WINDOWS_7_KEY = "YTH8H-3VJ37-T3RVT-YH7HG-KCVPD"
 
 
 # -------------------------------------------------------------------
@@ -66,7 +55,6 @@ def pause(msg="Press any key to continue..."):
 # Display Functions
 # -------------------------------------------------------------------
 def display_home():
-    """Show the ASCII-art home screen."""
     clear_screen()
     banner = r"""
  _____ _                _    _                _ _       
@@ -113,6 +101,8 @@ def display_main_menu():
     print("=" * 26)
     print("1) Cost Centers")
     print("2) Windows Activation Key")
+    print("3) Guides")
+    print("4) Troubleshooting")
     print("0) Exit")
     choice = input("\nSelect an option: ").strip()
     return choice
@@ -148,17 +138,33 @@ def show_cost_center(cc_number):
 
 
 def show_activation_key():
-    """Display the Windows activation key and copy to clipboard."""
+    # windows 11
     clear_screen()
-    print("Windows Activation Key")
+    print("Windows 11 Activation Key")
     print("=" * 23)
-    print(WINDOWS_KEY)
+    print(WINDOWS_11_KEY)
     if CLIPBOARD_AVAILABLE:
-        pyperclip.copy(WINDOWS_KEY)
-        print("\n[Key has been copied to your clipboard!]")
+        pyperclip.copy(WINDOWS_11_KEY)
+        print("\n[Windows 11 Key has been copied to your clipboard!]\n")
     else:
-        print("\n(To enable auto-copy, install pyperclip: pip install pyperclip)")
+        print("\n(To enable auto-copy, install pyperclip: pip install pyperclip)\n")
     print()
+
+    print("Windows 10 Activation Key")
+    print("=" * 23)
+    print(WINDOWS_10_KEY)
+    print()
+
+    print("Windows 8.1 Activation Key\n")
+    print("=" * 23)
+    print(WINDOWS_8_1_KEY)
+    print()
+
+    print("Windows 7 Activation Key\n")
+    print("=" * 23)
+    print(WINDOWS_7_KEY)
+    print()
+
     pause()
 
 
