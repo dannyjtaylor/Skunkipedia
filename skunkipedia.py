@@ -1,20 +1,46 @@
-import os
-import sys
-import time
-import msvcrt
-import pyperclip
-try:
-    import msvcrt 
-except ImportError:
-    msvcrt = None
 
-try:
-    import pyperclip
-    CLIPBOARD_AVAILABLE = True
-except ImportError:
-    CLIPBOARD_AVAILABLE = False
+def displayGuidesMenu():
+    clearScreen()
+    print("Guides")
+    print("=" * 6)
+    for k, v in guides.items():
+        print(f"{k}) {v['title']}")
+    print("0) Back")
+    choice = input("\nSelect a guide: ").strip()
+    return choice
 
-COST_CENTERS = {
+def showGuide(guideID):
+    clearScreen()
+    guide = guides.get(guideID)
+    if not guide:
+        print("Invalid selection.")
+        pause()
+        return
+    print(guide['title'])
+    print("-" * len(guide['title']))
+    print(guide['content'])
+    print()
+    pause()
+
+guides = {
+    "1": {
+        "title": "How To Verify Security Stack",
+        "content": "Step 1: Press the Windows button and type \"addre\" in the Windows Search bar to get to the Add or Remove Programs window.\n\nStep 2: Look for the following programs in the list: \n\t - AutoElevate\n\t - Cortex XDR\n\t - Duo (version 5.1.1)\n\t - Illumio\n\t - NinjaRMM Agent\n\t\nIf you see \"Carbon Black\", note that software should be uninstalled.\n\nStep 3: Please look at the next guide (press 0!)"
+    },
+    "2": {
+        "title": "How To Install/Uninstall Security Stack",
+        "content": "Step 1: Navigate to "
+    }
+}
+
+troubleshooting = {
+    "1": {
+        "title": "Test",
+        "content": "Test"
+    }
+}
+
+costCenters = {
     "728": {
         "Department": "Library Services (Library)",
         "Location": "325 Avenue A NW, Winter Haven, FL 33881",
@@ -40,17 +66,113 @@ COST_CENTERS = {
     }
 }
 
-WINDOWS_11_KEY = "MVHNP-G8632-B482B-QDW8D-QRR8R"
-WINDOWS_10_KEY = "MVHNP-G8632-B482B-QDW8D-QRR8R"
-WINDOWS_8_1_KEY = "MPXWC-7CN4B-64FCB-9T69B-F9BDQ"
-WINDOWS_7_KEY = "YTH8H-3VJ37-T3RVT-YH7HG-KCVPD"
+windowsKeys = {
+    "1": {
+        "name": "Windows 11",
+        "key": "MVHNP-G8632-B482B-QDW8D-QRR8R"
+    },
+    "2": {
+        "name": "Windows 10",
+        "key": "MVHNP-G8632-B482B-QDW8D-QRR8R"
+    },
+    "3": {
+        "name": "Windows 8.1",
+        "key": "MPXWC-7CN4B-64FCB-9T69B-F9BDQ"
+    },
+    "4": {
+        "name": "Windows 7",
+        "key": "YTH8H-3VJ37-T3RVT-YH7HG-KCVPD"
+    }
+}
+
+def displayTroubleshootingMenu():
+    clearScreen()
+    print("Troubleshooting")
+    print("=" * 14)
+    for k, v in troubleshooting.items():
+        print(f"{k}) {v['title']}")
+    print("0) Back")
+    choice = input("\nSelect an issue: ").strip()
+    return choice
+
+def showTroubleshooting(issue_id):
+    clearScreen()
+    issue = troubleshooting.get(issue_id)
+    if not issue:
+        print("Invalid selection.")
+        pause()
+        return
+    print(issue['title'])
+    print("-" * len(issue['title']))
+    print(issue['content'])
+    print()
+    pause()
+import os
+import sys
+import time
+import msvcrt
+import pyperclip
+try:
+    import msvcrt 
+except ImportError:
+    msvcrt = None
+
+try:
+    import pyperclip
+    CLIPBOARD_AVAILABLE = True
+except ImportError:
+    CLIPBOARD_AVAILABLE = False
+
+costCenters = {
+    "728": {
+        "Department": "Library Services (Library)",
+        "Location": "325 Avenue A NW, Winter Haven, FL 33881",
+        "Contact": "Jane Martin, jmartin@mywinterhaven.com, 333-333-3333",
+    },
+
+    "923": {
+        "Department": "Technology Services (Nora Mayo Hall, City Hall Annex)",
+        "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881, Nora Mayo Hall - 800 Ave A NW, Winter Haven, FL 33881",
+        "Contact": "Hiep Nguyen, hnguyen@mywinterhaven.com, 333-333-3333",
+    },
+
+    "618": {
+        "Department": "Water Department Customer Service", 
+        "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881", 
+        "Contact": "Gabby Gardner, ggardner@mywinterhaven.com, 863-291-5678 x 3370",
+    },
+
+    "111": {
+        "Department": "Finance Department",
+        "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881",
+        "Contact": "Coleen \"CJ\" Scott (CFO), cjscott@mywinterhaven.com, 863-291-5667 x 2500" 
+    }
+}
+
+windowsKeys = {
+    "1": {
+        "name": "Windows 11",
+        "key": "MVHNP-G8632-B482B-QDW8D-QRR8R"
+    },
+    "2": {
+        "name": "Windows 10",
+        "key": "MVHNP-G8632-B482B-QDW8D-QRR8R"
+    },
+    "3": {
+        "name": "Windows 8.1",
+        "key": "MPXWC-7CN4B-64FCB-9T69B-F9BDQ"
+    },
+    "4": {
+        "name": "Windows 7",
+        "key": "YTH8H-3VJ37-T3RVT-YH7HG-KCVPD"
+    }
+}
 
 
-# clear screen
-def clear_screen():
+def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# pause til keypress
+#wait for keypress
 def pause(msg="Press any key to continue..."):
     print(msg, end='', flush=True)
     if msvcrt:
@@ -61,8 +183,8 @@ def pause(msg="Press any key to continue..."):
     print()
 
 
-def display_home():
-    clear_screen()
+def displayHome():
+    clearScreen()
     banner = r"""
  _____ _                _    _                _ _       
 /  ___| |              | |  (_)              | (_)      
@@ -101,9 +223,9 @@ def display_home():
     pause()
 
 
-def display_main_menu():
+def displayMainMenu():
     #main menu options
-    clear_screen()
+    clearScreen()
     print("SKUNKIPEDIA - Main Menu")
     print("=" * 26)
     print("1) Cost Centers")
@@ -116,135 +238,86 @@ def display_main_menu():
 
 
 def displayCostCenters():
-    #show the cost centers submenu
-    clear_screen()
+    clearScreen()
     print("Cost Centers")
     print("=" * 12)
-    for cc in COST_CENTERS:
-        dept = COST_CENTERS[cc]["Department"]
+    for cc in costCenters:
+        dept = costCenters[cc]["Department"]
         print(f"{cc}) {dept}")
     print("0) Back")
     choice = input("\nEnter cost center number: ").strip()
     return choice
-
-
-
-# def displayActivationKeys():
-#     #main menu options
-#     clear_screen()
-#     print("SKUNKIPEDIA - Main Menu")
-#     print("=" * 26)
-#     print("1) Cost Centers")
-#     print("2) Windows Activation Key")
-#     print("3) Guides")
-#     print("4) Troubleshooting")
-#     print("0) Exit")
-#     choice = input("\nSelect an option: ").strip()
-#     return choice
-# def show_cost_center(cc_number):
-#     """Display details for a single cost center."""
-#     clear_screen()
-#     data = COST_CENTERS.get(cc_number)
-#     if not data:
-#         print("Invalid cost center number.")
-#     else:
-#         print(f"Cost Center: {cc_number}")
-#         print("-" * 30)
-#         print(f"Department           : {data['Department']}")
-#         print(f"Location             : {data['Location']}")
-#         print(f"Primary Contact      : {data['Contact']}")
-#     print()
-#     pause()
-
-
-# def show_activation_key():
-
-#     # windows 11
-#     clear_screen()
-#     print("Windows 11 Activation Key")
-#     print("=" * 23)
-#     print(WINDOWS_11_KEY)
-#     if CLIPBOARD_AVAILABLE:
-#         pyperclip.copy(WINDOWS_11_KEY)
-#         print("\n[Windows 11 key has been copied to the clipboard.]\n")
-#     print()
-
-#     print("Windows 10 Activation Key")
-#     print("=" * 23)
-#     print(WINDOWS_10_KEY)
-#     if CLIPBOARD_AVAILABLE:
-#         pyperclip.copy(WINDOWS_10_KEY)
-#         print("\n[Windows 10 key has been copied to the clipboard.]\n")
-#     print()
-
-#     print("Windows 8.1 Activation Key\n")
-#     print("=" * 23)
-#     print(WINDOWS_8_1_KEY)
-#     if CLIPBOARD_AVAILABLE:
-#         pyperclip.copy(WINDOWS_8_1_KEY)
-#         print("\n[Windows 8.1 key has been copied to the clipboard.]\n")
-#     print()
-
-#     print("Windows 7 Activation Key\n")
-#     print("=" * 23)
-#     print(WINDOWS_7_KEY)
-#     if CLIPBOARD_AVAILABLE:
-#         pyperclip.copy(WINDOWS_7_KEY)
-#         print("\n[Windows 7 key has been copied to the clipboard.]\n")
-#     print()
-
-#     pause()
+def showCostCenter(ccNumber):
+    clearScreen()
+    data = costCenters.get(ccNumber)
+    if not data:
+        print("Invalid cost center number.")
+        pause()
+        return
+    print(f"Cost Center: {ccNumber}")
+    print("-" * 30)
+    print(f"Department           : {data['Department']}\nLocation             : {data['Location']}\nPrimary Contact      : {data['Contact']}")
+    print()
+    pause()
 
 def displayActivationKeyMenu():
-    clear_screen()
+    clearScreen()
     print("Windows Activation Keys")
     print("=" * 23)
-    print("1) Windows 11")
-    print("2) Windows 10")
-    print("3) Windows 8.1")
-    print("4) Windows 7")
+    for k, v in windowsKeys.items():
+        print(f"{k}) {v['name']}")
     print("0) Back")
     choice = input("\nSelect an option: ").strip()
     return choice
 
 def showActivationKey(version):
-    clear_screen()
-    if version == "1":
-        print("Windows 11 Activation Key", WINDOWS_11_KEY")
-    elif version == "2":
-        print("Windows 10 Activation Key", WINDOWS_10_KEY")
-    elif version == "3":
-        print("Windows 8.1 Activation Key", WINDOWS_8_1_KEY")
-    elif version == "4":
-        print("Windows 7 Activation Key", WINDOWS_7_KEY")
-    else:
+    clearScreen()
+    key_info = windowsKeys.get(version)
+    if not key_info:
         print("Invalid selection.")
         pause()
         return
-
-
-        
-    
-
-
-
+    print(f"{key_info['name']} Activation Key")
+    print("=" * (len(key_info['name']) + 16))
+    print(key_info['key'])
+    if CLIPBOARD_AVAILABLE:
+        pyperclip.copy(key_info['key'])
+        print(f"\n[{key_info['name']} key has been copied to the clipboard.]\n")
+    print()
+    pause()
 
 def main():
-    display_home()
+    displayHome()
     while True:
-        choice = display_main_menu()
+        choice = displayMainMenu()
         if choice == "1":
-            # Cost Centers
             while True:
-                cc_choice = displayCostCenters()
-                if cc_choice == "0":
+                costCenterChoice = displayCostCenters()
+                if costCenterChoice  == "0":
                     break
-                show_cost_center(cc_choice)
+                showCostCenter(costCenterChoice)
         elif choice == "2":
-            # Windows Activation Key
-            show_activation_key()
+            while True:
+                version = displayActivationKeyMenu()
+                if version == "0":
+                    break
+                showActivationKey(version)
+        elif choice == "3":
+            # Guides submenu
+            while True:
+                guideChoice = displayGuidesMenu()
+                if guideChoice == "0":
+                    break
+                showGuide(guideChoice)
+        elif choice == "4":
+            # Troubleshooting submenu
+            while True:
+                troubleshootChoice = displayTroubleshootingMenu()
+                if troubleshootChoice == "0":
+                    break
+                showTroubleshooting(troubleshootChoice)
         elif choice == "0":
-            clear_screen()
+            clearScreen()
             print("Goodbye!")
             time.sleep(0.5)
             sys.exit(0)
