@@ -36,7 +36,7 @@ guides = {
 troubleshooting = {
     "1": {
         "title": "Test",
-        "content": "Test"
+        "content": "Test2"
     }
 }
 
