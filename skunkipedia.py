@@ -145,7 +145,62 @@ costCenters = {
     "111": {
         "Department": "Finance Department",
         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881",
-        "Contact": "Coleen \"CJ\" Scott (CFO), cjscott@mywinterhaven.com, 863-291-5667 x 2500" 
+        "Contact": "Coleen \"CJ\" Scott (CFO), cjscott@mywinterhaven.com, 863-291-5667 x 2500", 
+    },
+
+    "101": {
+        "Department": "City Commission",
+        "Location":  "City Manager's Office/Commision - 451 3rd St NW, Winter Haven, FL 33881",
+        "Contact": "Bradley T. Dantzler (Mayor), btdantzler@mywinterhaven.com, 863-291-5600 x 224",
+    },
+    "102": {
+        "Department": "Legal",
+        "Location": "City Attorney's Office - 245 South Central Ave, Bartow, FL 33830", 
+        "Contact": "Frederick John Murlphy, Jr., Esquire (City Attorney), @fjmurphy.com, 863-294-3363", 
+    },
+
+    "103": {
+        "Department": "City Manager",
+        "Location": "City Hall - 451 3rd St NW, Winter Haven, FL 33881",
+        "Contact": "T.Michael Stavres (City Manager), mstavres@mywinterhaven.com, 863-291-5600 x 221",
+    },
+
+    "105": {
+        "Department": "City Clerk",
+        "Location": "City Hall - 451 3rd St NW, Winter Haven, FL 33881",
+        "Contact": "Vanessa Castillo (City Clerk), vcastillo@mywinterhaven.com, 863-291-5600 x 224",
+    },
+
+    "217": {
+        "Department": "Code Compliance",
+        "Location": "Fire Station 4 - 1254 Fairfax St NE Winter Haven, FL 33881",
+        "Contact": "Ayers Tanya (Code Compliance Supervisor), tayers@mywinterhaven.com, 863-291-5697",
+    },
+
+    "200": {
+        "Department": "Public Safety - Police",
+        "Location": "Police Department - 125 North Lake Silver Drive NW, Winter Haven, FL 33881",
+        "Contact": "Vance Monroe (Police Chief), vmonroe@mywinterhaven.com, 863-291-5858",
+    },
+
+    "204": {
+        "Department": "PAL",
+        "Location": "N/A",
+        "Contact": "N/A",
+
+    },
+    "206": {
+        "Department": "Police Grants",
+        "Location": "N/A",
+        "Contact": "N/A",
+    },
+    "213": {
+        "Department": "Public Safety - Fire Stations",
+        "Location": "Fire Stations 1 - 301 Avenue G, SW and U.S. Highway 17 North (Third Street), Winter Haven, FL 33880\n Fire Station 2 - 4700 Lucerne Park Rd, Winter Haven, FL 33881\n Fire Station 3 - 6975 Eloise Loop Rd, Winter Haven, FL 33884\n Fire Sation 4 - 1254 Fairfax St NE, Winter Haven, FL 33881\n Fire Station 5 - 1803 Havendale Blvd., Winter Haven, FL 33881",
+        "Contact": "Fire Station 1 - Non-Emergency Number - 863-291-5665\n Fire Station 2 - Non-Emergency Number - 863-298-5212\n Fire Station 3 - Non-Emergency Number - 863-298-5212\n Fire Station 4 - Non-Emergency Number - 863-282-8034\n Fire Station 5 - Non-Emergency Number - 863-282-8035",
+    },
+
+
     }
 }
 
