@@ -1,4 +1,19 @@
+import os
+import sys
+import time
+import msvcrt
+import pyperclip
+try:
+    import msvcrt 
+except ImportError:
+    msvcrt = None
 
+try:
+    import pyperclip
+    CLIPBOARD_AVAILABLE = True
+except ImportError:
+    CLIPBOARD_AVAILABLE = False
+    
 def displayGuidesMenu():
     clearScreen()
     print("Guides")
@@ -40,31 +55,31 @@ troubleshooting = {
     }
 }
 
-costCenters = {
-    "728": {
-        "Department": "Library Services (Library)",
-        "Location": "325 Avenue A NW, Winter Haven, FL 33881",
-        "Contact": "Jane Martin, jmartin@mywinterhaven.com, 333-333-3333",
-    },
+# costCenters = {
+#     "728": {
+#         "Department": "Library Services (Library)",
+#         "Location": "325 Avenue A NW, Winter Haven, FL 33881",
+#         "Contact": "Jane Martin, jmartin@mywinterhaven.com, 333-333-3333",
+#     },
 
-    "923": {
-        "Department": "Technology Services (Nora Mayo Hall, City Hall Annex)",
-        "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881, Nora Mayo Hall - 800 Ave A NW, Winter Haven, FL 33881",
-        "Contact": "Hiep Nguyen, hnguyen@mywinterhaven.com, 333-333-3333",
-    },
+#     "923": {
+#         "Department": "Technology Services (Nora Mayo Hall, City Hall Annex)",
+#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881, Nora Mayo Hall - 800 Ave A NW, Winter Haven, FL 33881",
+#         "Contact": "Hiep Nguyen, hnguyen@mywinterhaven.com, 333-333-3333",
+#     },
 
-    "618": {
-        "Department": "Water Department Customer Service", 
-        "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881", 
-        "Contact": "Gabby Gardner, ggardner@mywinterhaven.com, 863-291-5678 x 3370",
-    },
+#     "618": {
+#         "Department": "Water Department Customer Service", 
+#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881", 
+#         "Contact": "Gabby Gardner, ggardner@mywinterhaven.com, 863-291-5678 x 3370",
+#     },
 
-    "111": {
-        "Department": "Finance Department",
-        "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881",
-        "Contact": "Coleen \"CJ\" Scott (CFO), cjscott@mywinterhaven.com, 863-291-5667 x 2500" 
-    }
-}
+#     "111": {
+#         "Department": "Finance Department",
+#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881",
+#         "Contact": "Coleen \"CJ\" Scott (CFO), cjscott@mywinterhaven.com, 863-291-5667 x 2500" 
+#     }
+# }
 
 windowsKeys = {
     "1": {
@@ -107,21 +122,6 @@ def showTroubleshooting(issue_id):
     print(issue['content'])
     print()
     pause()
-import os
-import sys
-import time
-import msvcrt
-import pyperclip
-try:
-    import msvcrt 
-except ImportError:
-    msvcrt = None
-
-try:
-    import pyperclip
-    CLIPBOARD_AVAILABLE = True
-except ImportError:
-    CLIPBOARD_AVAILABLE = False
 
 costCenters = {
     "728": {
@@ -200,10 +200,27 @@ costCenters = {
         "Department": "Public Safety - Fire Stations",
         "Location": "Fire Station 1 - 301 Avenue G, Winter Haven, FL 33880\n\t\t       Fire Station 2 - 4700 Lucerne Park Rd, Winter Haven, FL 33881\n\t\t       Fire Station 3 - 6975 Eloise Loop Rd, Winter Haven, FL 33884\n\t\t       Fire Station 4 - 1254 Fairfax St NE, Winter Haven, FL 33881\n\t\t       Fire Station 5 - 1803 Havendale Blvd., Winter Haven, FL 33881",
         "Contact": "Fire Station 1 - Non-Emergency Number - 863-291-5665\n\t\t       Fire Station 2 - Non-Emergency Number - 863-298-5212\n\t\t       Fire Station 3 - Non-Emergency Number - 863-298-5212\n\t\t       Fire Station 4 - Non-Emergency Number - 863-282-8034\n\t\t       Fire Station 5 - Non-Emergency Number - 863-282-8035",
-    }
+    },
+    
+    "312": {
+        "Department": "Parks & Grounds",
+        "Location": "N/A:",
+        "Contact": "N/A",
 
+    },
 
+    "700": {
+        "Department": "Parks & Recreation Administration",
+        "Location": "Nora Mayor Hall - 500 Third Street NW, Winter Haven, FL 33880",
+        
+    },
+
+    "705": {
+        "Department": "Fieldhouse & Conference Center",
+        "Location": "AdventHealth FieldHouse & Conference Center - 210 Cypress Gardens Blvd, Winter Haven, FL 33880",
+        "Contact": "N/A"
     }
+}
 
 windowsKeys = {
     "1": {
@@ -221,6 +238,10 @@ windowsKeys = {
     "4": {
         "name": "Windows 7",
         "key": "YTH8H-3VJ37-T3RVT-YH7HG-KCVPD"
+    },
+    "5": {
+        "name": "Microsoft Office 2024",
+        "key": "GWNJM-H6FRF-39GGY-KHD9Y-MY883"
     }
 }
 
