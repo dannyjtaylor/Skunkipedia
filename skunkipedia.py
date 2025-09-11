@@ -151,7 +151,7 @@ costCenters = {
     "101": {
         "Department": "City Commission",
         "Location":  "City Manager's Office/Commision - 451 3rd St NW, Winter Haven, FL 33881",
-        "Contact": "Bradley T. Dantzler (Mayor), btdantzler@mywinterhaven.com, 863-291-5600 x 224",
+        "Contact": "Bradley T. Dantzler (Mayor), btdantzler@mywinterhaven.com, 863-291-5600 x 224", #Check this again
     },
     "102": {
         "Department": "Legal",
@@ -168,19 +168,19 @@ costCenters = {
     "105": {
         "Department": "City Clerk",
         "Location": "City Hall - 451 3rd St NW, Winter Haven, FL 33881",
-        "Contact": "Vanessa Castillo (City Clerk), vcastillo@mywinterhaven.com, 863-291-5600 x 224",
+        "Contact": "Vanessa Castillo (City Clerk N), vcastillo@mywinterhaven.com, 863-291-5600 x 224",
     },
 
     "217": {
         "Department": "Code Compliance",
         "Location": "Fire Station 4 - 1254 Fairfax St NE Winter Haven, FL 33881",
-        "Contact": "Ayers Tanya (Code Compliance Supervisor), tayers@mywinterhaven.com, 863-291-5697",
+        "Contact": "Ayers Tanya (Code Compliance Supervisor), tayers@mywinterhaven.com, 863-291-5697", #mainline?
     },
 
     "200": {
         "Department": "Public Safety - Police",
         "Location": "Police Department - 125 North Lake Silver Drive NW, Winter Haven, FL 33881",
-        "Contact": "Vance Monroe (Police Chief), vmonroe@mywinterhaven.com, 863-291-5858",
+        "Contact": "Vance Monroe (Police Chief), vmonroe@mywinterhaven.com, 863-291-5858", #mainline?
     },
 
     "204": {
@@ -203,7 +203,7 @@ costCenters = {
     },
     
     "312": {
-        "Department": "Parks & Grounds",
+        "Department": "Parks & Grounds", # Have this information
         "Location": "N/A:",
         "Contact": "N/A",
 
@@ -212,20 +212,99 @@ costCenters = {
     "700": {
         "Department": "Parks & Recreation Administration",
         "Location": "Nora Mayor Hall - 500 Third Street NW, Winter Haven, FL 33880",
-        
+        "Contact": #Need this information
     },
 
     "705": {
         "Department": "Fieldhouse & Conference Center",
         "Location": "AdventHealth FieldHouse & Conference Center - 210 Cypress Gardens Blvd, Winter Haven, FL 33880",
-        "Contact": "N/A"
+        "Contact": "N/A" #Mainline?
+    
     },
 
     "306": {
         "Department": "Commercial Refuse",
-        "Location": "N/A",
-        "Contact": "N/A",
+        "Location": "2501 Motor Pool Road, 33881"
+        "Contact": "Brittany Hart (Public Works Director), bhart@mywinterhaven.com, 863-291-5756",
+    },
+    "709": {
+        "Department": "W.H. Rec. & Cultural Center",
+        "Location": "WH Recreation and Cultural Center -  801 Martin Luther King Blvd NE, Winter Haven, FL 33881",
+        "Contact": "Demetrius Sanders (Recreation Superviso I), dsanders@mywinterhaven.com, 863-291-5675",
+
     }
+    "711": {
+        "Department": "Acivity Fields",
+        "Location": "AdventHealth Fieldhouse and Conference Center - 210 Cypress Gardens Blvd, Winter Haven, FL 33880",
+        "Contact": "Neal Kris (Crew Leader II), kneal@mywinterhaven.com, 863-291-5745",
+
+    }
+    "400": {
+        "Department": "Public Svc Bldgs/ Nora Mayor Hall",
+        "Location": "Nora Mayor Hall - 500 3rd St NW, Winter Haven, FL 33881",
+        "Contact": #Requires multiple?
+
+    }
+    "401": {
+        "Department": "Streets",
+        "Location": "2745 Motor Pool Road, 33881"
+        "Contact" : "Mike Campbell (Streets & Drainage Superintendent), mcampbell@mywinterhaven.com, 863-291-5852", #Mike Campbell doesn't pop up on outlook
+
+    }
+    "218": {
+        "Department": "Growth Management/Planning", #Unsure which planning, will use AICP 
+        "Location":"City Hall - 451 3rd Street NW, Winter Haven, FL 33881",
+        "Contact": "Eric Labbe (Department Director), elabbe@mywinterhaven.com, 863-291-5600 x 241",
+
+    }
+
+    "301": {
+        "Department": "Water Plants/Utility Services",
+        "Location" : "1334 Fairfax Drive",
+        "Contact" : "Steven Warder (Water Plant Manager), swarder@mywinterhaven.com, 863-291-5767",
+
+    }
+    "304": {
+        "Department": "Wastewater Treatment Plant #2",
+        "Location": "2746 Motor Pool Road, Winter Haven, FL 33881",
+        "Contact": "David Nicholson (Wastewater Treament Plants Manager), 863-514-0438 " #Address from city directory
+
+    }
+    "310": {
+        "Department": "Utility Services Administration",
+        "Location": "" #Ask about this department
+
+    }
+    "316": {
+        "Department": "", #Ask about this department
+        "Location": "", 
+        "Contact": "",
+
+    }
+    "322": {
+        "Department": "", # Ask about this department
+        "Location": "", 
+        "Contact": "",
+    }
+    "323": {
+        "Department": "", # Ask about this department
+        "Location": "", 
+        "Contact": "",
+
+    }
+    "905": {
+        "Department": "City Hall",
+        "Location": "City Hall - 451 3rd St NW, Winter Haven, FL 33881", 
+        "Contact": "Heather Pellegrino (Communication Staff Assistant), hpellegrino@mywinterhaven.com, 863-291-5678",
+    }"907": {
+        "Department": "Fleet Maintenance", 
+        "Location": "2501 Motor Pool Road, Winter Haven, FL 33881",  #Need the location name
+        "Contact": "Aaron Russel (Fleet Maintenance Manager), ", 
+
+    
+    # Will include mainline and main person in contact 
+        
+
 }
 
 windowsKeys = {
@@ -251,7 +330,6 @@ windowsKeys = {
     }
 }
 
-
 def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -264,7 +342,6 @@ def pause(msg="Press any key to continue..."):
         # for some reason it wouldnt work without a fallback
         input()
     print()
-
 
 def displayHome():
     clearScreen()
@@ -305,7 +382,6 @@ def displayHome():
     print()
     pause()
 
-
 def displayMainMenu():
     #main menu options
     clearScreen()
@@ -318,7 +394,6 @@ def displayMainMenu():
     print("0) Exit")
     choice = input("\nSelect an option: ").strip()
     return choice
-
 
 def displayCostCenters():
     clearScreen()
@@ -408,10 +483,8 @@ def main():
             print("Invalid selection. Please try again.")
             time.sleep(1)
 
-
 if __name__ == "__main__":
     main()
-
 
 # how to build?
 # do it in howard -
@@ -419,4 +492,5 @@ if __name__ == "__main__":
 
 # do it in the github folder
 # pyinstaller --onefile skunkipedia.py (can't already be open)
+
 
