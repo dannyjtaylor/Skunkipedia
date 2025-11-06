@@ -3,26 +3,7 @@ import sys
 import time
 import msvcrt
 import pyperclip
-try:
-    import msvcrt 
-except ImportError:
-    msvcrt = None
-
-try:
-    import pyperclip
-    CLIPBOARD_AVAILABLE = True
-except ImportError:
-    CLIPBOARD_AVAILABLE = False
-
-try:
-    from fuzzywuzzy import fuzz, process
-    FUZZYWUZZY_AVAILABLE = True
-except ImportError:
-    try:
-        from thefuzz import fuzz, process
-        FUZZYWUZZY_AVAILABLE = True
-    except ImportError:
-        FUZZYWUZZY_AVAILABLE = False
+from fuzzywuzzy import fuzz, process
 
 def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=60):
     """
@@ -47,10 +28,6 @@ def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=6
     if user_input in options_dict:
         return user_input
     
-    # If fuzzywuzzy is not available, return None
-    if not FUZZYWUZZY_AVAILABLE:
-        return None
-    
     # Build a list of searchable strings with their corresponding keys
     search_items = []
     for key, value in options_dict.items():
@@ -72,7 +49,6 @@ def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=6
         for key, text in search_items:
             if text == matched_text:
                 return key
-    
     return None
     
 def displayGuidesMenu():
@@ -82,8 +58,7 @@ def displayGuidesMenu():
     for k, v in guides.items():
         print(f"{k}) {v['title']}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the guide number or type part of the guide name)")
+    print("\n(You can enter the guide number or type part of the guide name)")
     choice = input("\nSelect a guide: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -123,32 +98,6 @@ troubleshooting = {
     }
 }
 
-# costCenters = {
-#     "728": {
-#         "Department": "Library Services (Library)",
-#         "Location": "325 Avenue A NW, Winter Haven, FL 33881",
-#         "Contact": "Jane Martin, jmartin@mywinterhaven.com, 333-333-3333",
-#     },
-
-#     "923": {
-#         "Department": "Technology Services (Nora Mayo Hall, City Hall Annex)",
-#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881, Nora Mayo Hall - 800 Ave A NW, Winter Haven, FL 33881",
-#         "Contact": "Hiep Nguyen, hnguyen@mywinterhaven.com, 333-333-3333",
-#     },
-
-#     "618": {
-#         "Department": "Water Department Customer Service", 
-#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881", 
-#         "Contact": "Gabby Gardner, ggardner@mywinterhaven.com, 863-291-5678 x 3370",
-#     },
-
-#     "111": {
-#         "Department": "Finance Department",
-#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881",
-#         "Contact": "Coleen \"CJ\" Scott (CFO), cjscott@mywinterhaven.com, 863-291-5667 x 2500" 
-#     }
-# }
-
 windowsKeys = {
     "1": {
         "name": "Windows 11",
@@ -175,8 +124,7 @@ def displayTroubleshootingMenu():
     for k, v in troubleshooting.items():
         print(f"{k}) {v['title']}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the issue number or type part of the issue name)")
+    print("\n(You can enter the issue number or type part of the issue name)")
     choice = input("\nSelect an issue: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -376,11 +324,7 @@ costCenters = {
         "Department": "Fleet Maintenance", 
         "Location": "2501 Motor Pool Road, Winter Haven, FL 33881",  #Need the location name
         "Contact": "Aaron Russel (Fleet Maintenance Manager), ", 
-
-    
-    # Will include mainline and main person in contact 
-        
-
+        }
 }
 
 windowsKeys = {
@@ -412,11 +356,7 @@ def clearScreen():
 #wait for keypress
 def pause(msg="Press any key to continue..."):
     print(msg, end='', flush=True)
-    if msvcrt:
-        msvcrt.getch()
-    else:
-        # for some reason it wouldnt work without a fallback
-        input()
+    msvcrt.getch()
     print()
 
 def displayHome():
@@ -468,8 +408,7 @@ def displayMainMenu():
     print("3) Guides")
     print("4) Troubleshooting")
     print("0) Exit")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the option number or type part of the menu name)")
+    print("\n(You can enter the option number or type part of the menu name)")
     choice = input("\nSelect an option: ").strip()
     # Use fuzzy matching for main menu
     main_menu_options = {
@@ -493,8 +432,7 @@ def displayCostCenters():
         dept = costCenters[cc]["Department"]
         print(f"{cc}) {dept}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the cost center number or type part of the department name)")
+    print("\n(You can enter the cost center number or type part of the department name)")
     choice = input("\nEnter cost center number: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -522,8 +460,7 @@ def displayActivationKeyMenu():
     for k, v in windowsKeys.items():
         print(f"{k}) {v['name']}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the option number or type part of the Windows version name)")
+    print("\n(You can enter the option number or type part of the Windows version name)")
     choice = input("\nSelect an option: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -542,9 +479,8 @@ def showActivationKey(version):
     print(f"{key_info['name']} Activation Key")
     print("=" * (len(key_info['name']) + 16))
     print(key_info['key'])
-    if CLIPBOARD_AVAILABLE:
-        pyperclip.copy(key_info['key'])
-        print(f"\n[{key_info['name']} key has been copied to the clipboard.]\n")
+    pyperclip.copy(key_info['key'])
+    print(f"\n[{key_info['name']} key has been copied to the clipboard.]\n")
     print()
     pause()
 

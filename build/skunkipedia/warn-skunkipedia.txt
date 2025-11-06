@@ -22,6 +22,8 @@ missing module named 'collections.abc' - imported by traceback (top-level), insp
 missing module named posix - imported by os (conditional, optional), posixpath (optional), shutil (conditional), importlib._bootstrap_external (conditional)
 missing module named resource - imported by posix (top-level)
 missing module named _suggestions - imported by traceback (delayed, optional)
+missing module named thefuzz - imported by C:\Users\dtaylor\Documents\GitHub\Cursor\Skunkipedia\Skunkipedia\skunkipedia.py (optional)
+missing module named fuzzywuzzy - imported by C:\Users\dtaylor\Documents\GitHub\Cursor\Skunkipedia\Skunkipedia\skunkipedia.py (optional)
 missing module named AppKit - imported by pyperclip (delayed, conditional, optional)
 missing module named Foundation - imported by pyperclip (delayed, conditional, optional)
 missing module named PyQt5 - imported by pyperclip (delayed, conditional, optional)

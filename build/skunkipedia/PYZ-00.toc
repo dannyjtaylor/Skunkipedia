@@ -1,4 +1,4 @@
-('C:\\Users\\dtaylor\\Documents\\GitHub\\Skunkipedia\\build\\skunkipedia\\PYZ-00.pyz',
+('C:\\Users\\dtaylor\\Documents\\GitHub\\Cursor\\Skunkipedia\\Skunkipedia\\build\\skunkipedia\\PYZ-00.pyz',
  [('__future__',
    'C:\\Users\\dtaylor\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\__future__.py',
    'PYMODULE'),
