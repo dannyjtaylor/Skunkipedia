@@ -13,6 +13,67 @@ try:
     CLIPBOARD_AVAILABLE = True
 except ImportError:
     CLIPBOARD_AVAILABLE = False
+
+try:
+    from fuzzywuzzy import fuzz, process
+    FUZZYWUZZY_AVAILABLE = True
+except ImportError:
+    try:
+        from thefuzz import fuzz, process
+        FUZZYWUZZY_AVAILABLE = True
+    except ImportError:
+        FUZZYWUZZY_AVAILABLE = False
+
+def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=60):
+    """
+    Match user input to a dictionary key using fuzzy matching.
+    
+    Args:
+        user_input: The user's input (string)
+        options_dict: Dictionary of options to search through
+        search_field: Field name to search in (e.g., 'title', 'name', 'Department')
+        min_score: Minimum similarity score (0-100) to consider a match
+    
+    Returns:
+        The matching key if found, None otherwise
+    """
+    # If input is empty, return None
+    if not user_input or not user_input.strip():
+        return None
+    
+    user_input = user_input.strip()
+    
+    # First, try exact key match (for backward compatibility with numbers)
+    if user_input in options_dict:
+        return user_input
+    
+    # If fuzzywuzzy is not available, return None
+    if not FUZZYWUZZY_AVAILABLE:
+        return None
+    
+    # Build a list of searchable strings with their corresponding keys
+    search_items = []
+    for key, value in options_dict.items():
+        if isinstance(value, dict) and search_field in value:
+            search_text = value[search_field]
+        elif isinstance(value, str):
+            search_text = value
+        else:
+            search_text = str(value)
+        search_items.append((key, search_text))
+    
+    # Use process.extractOne to find the best match
+    choices = [item[1] for item in search_items]
+    result = process.extractOne(user_input, choices, scorer=fuzz.WRatio)
+    
+    if result and result[1] >= min_score:
+        # Find the key corresponding to the matched text
+        matched_text = result[0]
+        for key, text in search_items:
+            if text == matched_text:
+                return key
+    
+    return None
     
 def displayGuidesMenu():
     clearScreen()
@@ -21,7 +82,14 @@ def displayGuidesMenu():
     for k, v in guides.items():
         print(f"{k}) {v['title']}")
     print("0) Back")
+    if FUZZYWUZZY_AVAILABLE:
+        print("\n(You can enter the guide number or type part of the guide name)")
     choice = input("\nSelect a guide: ").strip()
+    # Use fuzzy matching if not "0" (back)
+    if choice != "0":
+        matched = fuzzyMatchChoice(choice, guides, search_field='title')
+        if matched:
+            return matched
     return choice
 
 def showGuide(guideID):
@@ -107,7 +175,14 @@ def displayTroubleshootingMenu():
     for k, v in troubleshooting.items():
         print(f"{k}) {v['title']}")
     print("0) Back")
+    if FUZZYWUZZY_AVAILABLE:
+        print("\n(You can enter the issue number or type part of the issue name)")
     choice = input("\nSelect an issue: ").strip()
+    # Use fuzzy matching if not "0" (back)
+    if choice != "0":
+        matched = fuzzyMatchChoice(choice, troubleshooting, search_field='title')
+        if matched:
+            return matched
     return choice
 
 def showTroubleshooting(issue_id):
@@ -212,7 +287,7 @@ costCenters = {
     "700": {
         "Department": "Parks & Recreation Administration",
         "Location": "Nora Mayor Hall - 500 Third Street NW, Winter Haven, FL 33880",
-        "Contact": #Need this information
+        "Contact": "N/A" #Need this information
     },
 
     "705": {
@@ -224,7 +299,7 @@ costCenters = {
 
     "306": {
         "Department": "Commercial Refuse",
-        "Location": "2501 Motor Pool Road, 33881"
+        "Location": "2501 Motor Pool Road, 33881",
         "Contact": "Brittany Hart (Public Works Director), bhart@mywinterhaven.com, 863-291-5756",
     },
     "709": {
@@ -232,71 +307,72 @@ costCenters = {
         "Location": "WH Recreation and Cultural Center -  801 Martin Luther King Blvd NE, Winter Haven, FL 33881",
         "Contact": "Demetrius Sanders (Recreation Superviso I), dsanders@mywinterhaven.com, 863-291-5675",
 
-    }
+    },
     "711": {
         "Department": "Acivity Fields",
         "Location": "AdventHealth Fieldhouse and Conference Center - 210 Cypress Gardens Blvd, Winter Haven, FL 33880",
         "Contact": "Neal Kris (Crew Leader II), kneal@mywinterhaven.com, 863-291-5745",
 
-    }
+    },
     "400": {
         "Department": "Public Svc Bldgs/ Nora Mayor Hall",
         "Location": "Nora Mayor Hall - 500 3rd St NW, Winter Haven, FL 33881",
-        "Contact": #Requires multiple?
+        "Contact": "N/A" #Requires multiple?
 
-    }
+    },
     "401": {
         "Department": "Streets",
-        "Location": "2745 Motor Pool Road, 33881"
+        "Location": "2745 Motor Pool Road, 33881",
         "Contact" : "Mike Campbell (Streets & Drainage Superintendent), mcampbell@mywinterhaven.com, 863-291-5852", #Mike Campbell doesn't pop up on outlook
 
-    }
+    },
     "218": {
         "Department": "Growth Management/Planning", #Unsure which planning, will use AICP 
         "Location":"City Hall - 451 3rd Street NW, Winter Haven, FL 33881",
         "Contact": "Eric Labbe (Department Director), elabbe@mywinterhaven.com, 863-291-5600 x 241",
 
-    }
+    },
 
     "301": {
         "Department": "Water Plants/Utility Services",
         "Location" : "1334 Fairfax Drive",
         "Contact" : "Steven Warder (Water Plant Manager), swarder@mywinterhaven.com, 863-291-5767",
 
-    }
+    },
     "304": {
         "Department": "Wastewater Treatment Plant #2",
         "Location": "2746 Motor Pool Road, Winter Haven, FL 33881",
         "Contact": "David Nicholson (Wastewater Treament Plants Manager), 863-514-0438 " #Address from city directory
 
-    }
+    },
     "310": {
         "Department": "Utility Services Administration",
         "Location": "" #Ask about this department
 
-    }
+    },
     "316": {
         "Department": "", #Ask about this department
         "Location": "", 
         "Contact": "",
 
-    }
+    },
     "322": {
         "Department": "", # Ask about this department
         "Location": "", 
         "Contact": "",
-    }
+    },
     "323": {
         "Department": "", # Ask about this department
         "Location": "", 
         "Contact": "",
 
-    }
+    },
     "905": {
         "Department": "City Hall",
         "Location": "City Hall - 451 3rd St NW, Winter Haven, FL 33881", 
         "Contact": "Heather Pellegrino (Communication Staff Assistant), hpellegrino@mywinterhaven.com, 863-291-5678",
-    }"907": {
+    },
+    "907": {
         "Department": "Fleet Maintenance", 
         "Location": "2501 Motor Pool Road, Winter Haven, FL 33881",  #Need the location name
         "Contact": "Aaron Russel (Fleet Maintenance Manager), ", 
@@ -392,7 +468,21 @@ def displayMainMenu():
     print("3) Guides")
     print("4) Troubleshooting")
     print("0) Exit")
+    if FUZZYWUZZY_AVAILABLE:
+        print("\n(You can enter the option number or type part of the menu name)")
     choice = input("\nSelect an option: ").strip()
+    # Use fuzzy matching for main menu
+    main_menu_options = {
+        "1": {"name": "Cost Centers"},
+        "2": {"name": "Windows Activation Key"},
+        "3": {"name": "Guides"},
+        "4": {"name": "Troubleshooting"},
+        "0": {"name": "Exit"}
+    }
+    if choice != "0":
+        matched = fuzzyMatchChoice(choice, main_menu_options, search_field='name')
+        if matched:
+            return matched
     return choice
 
 def displayCostCenters():
@@ -403,7 +493,14 @@ def displayCostCenters():
         dept = costCenters[cc]["Department"]
         print(f"{cc}) {dept}")
     print("0) Back")
+    if FUZZYWUZZY_AVAILABLE:
+        print("\n(You can enter the cost center number or type part of the department name)")
     choice = input("\nEnter cost center number: ").strip()
+    # Use fuzzy matching if not "0" (back)
+    if choice != "0":
+        matched = fuzzyMatchChoice(choice, costCenters, search_field='Department')
+        if matched:
+            return matched
     return choice
 def showCostCenter(ccNumber):
     clearScreen()
@@ -425,7 +522,14 @@ def displayActivationKeyMenu():
     for k, v in windowsKeys.items():
         print(f"{k}) {v['name']}")
     print("0) Back")
+    if FUZZYWUZZY_AVAILABLE:
+        print("\n(You can enter the option number or type part of the Windows version name)")
     choice = input("\nSelect an option: ").strip()
+    # Use fuzzy matching if not "0" (back)
+    if choice != "0":
+        matched = fuzzyMatchChoice(choice, windowsKeys, search_field='name')
+        if matched:
+            return matched
     return choice
 
 def showActivationKey(version):
