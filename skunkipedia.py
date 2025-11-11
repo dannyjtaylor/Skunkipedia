@@ -130,8 +130,19 @@ def showTroubleshooting(issue_id):
 
 def promptLogin():
     clearScreen()
-    print("Skunkipedia - Login")
-    print("=" * 10)
+    banner = r"""
+ _____ _                _    _                _ _       
+/  ___| |              | |  (_)              | (_)      
+\ `--.| | ___   _ _ __ | | ___ _ __   ___  __| |_  __ _ 
+ `--. \ |/ / | | | '_ \| |/ / | '_ \ / _ \/ _` | |/ _` |
+/\__/ /   <| |_| | | | |   <| | |_) |  __/ (_| | | (_| |
+\____/|_|\_\\__,_|_| |_|_|\_\_| .__/ \___|\__,_|_|\__,_|
+                              | |                       
+                              |_|       
+    """
+    print(banner)
+    print("Enter Login Credentials Below:")
+    print("=" * 20)
     
     VALID_USERS = {
         "admin": "password",
@@ -471,16 +482,6 @@ def displayHome():
         sys.exit(0)
     
     clearScreen()
-    banner = r"""
- _____ _                _    _                _ _       
-/  ___| |              | |  (_)              | (_)      
-\ `--.| | ___   _ _ __ | | ___ _ __   ___  __| |_  __ _ 
- `--. \ |/ / | | | '_ \| |/ / | '_ \ / _ \/ _` | |/ _` |
-/\__/ /   <| |_| | | | |   <| | |_) |  __/ (_| | | (_| |
-\____/|_|\_\\__,_|_| |_|_|\_\_| .__/ \___|\__,_|_|\__,_|
-                              | |                       
-                              |_|                       
-    """
     bigfoot = r"""
        _...._
      .-.     /
@@ -501,7 +502,6 @@ def displayHome():
               `.__.-'  .-' _-.-'
                        `.__,'
     """
-    print(banner)
     print("Welcome to SKUNKIPEDIA!")
     print("\nA quick-reference IT Knowledge Base.\n")
     print(bigfoot)
