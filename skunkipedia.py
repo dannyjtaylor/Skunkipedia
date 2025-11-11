@@ -3,26 +3,7 @@ import sys
 import time
 import msvcrt
 import pyperclip
-try:
-    import msvcrt 
-except ImportError:
-    msvcrt = None
-
-try:
-    import pyperclip
-    CLIPBOARD_AVAILABLE = True
-except ImportError:
-    CLIPBOARD_AVAILABLE = False
-
-try:
-    from fuzzywuzzy import fuzz, process
-    FUZZYWUZZY_AVAILABLE = True
-except ImportError:
-    try:
-        from thefuzz import fuzz, process
-        FUZZYWUZZY_AVAILABLE = True
-    except ImportError:
-        FUZZYWUZZY_AVAILABLE = False
+from thefuzz import fuzz, process
 
 def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=60):
     """
@@ -47,10 +28,6 @@ def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=6
     if user_input in options_dict:
         return user_input
     
-    # If fuzzywuzzy is not available, return None
-    if not FUZZYWUZZY_AVAILABLE:
-        return None
-    
     # Build a list of searchable strings with their corresponding keys
     search_items = []
     for key, value in options_dict.items():
@@ -72,7 +49,6 @@ def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=6
         for key, text in search_items:
             if text == matched_text:
                 return key
-    
     return None
     
 def displayGuidesMenu():
@@ -82,8 +58,7 @@ def displayGuidesMenu():
     for k, v in guides.items():
         print(f"{k}) {v['title']}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the guide number or type part of the guide name)")
+    print("\n(You can enter the guide number or type part of the guide name)")
     choice = input("\nSelect a guide: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -123,51 +98,6 @@ troubleshooting = {
     }
 }
 
-# costCenters = {
-#     "728": {
-#         "Department": "Library Services (Library)",
-#         "Location": "325 Avenue A NW, Winter Haven, FL 33881",
-#         "Contact": "Jane Martin, jmartin@mywinterhaven.com, 333-333-3333",
-#     },
-
-#     "923": {
-#         "Department": "Technology Services (Nora Mayo Hall, City Hall Annex)",
-#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881, Nora Mayo Hall - 800 Ave A NW, Winter Haven, FL 33881",
-#         "Contact": "Hiep Nguyen, hnguyen@mywinterhaven.com, 333-333-3333",
-#     },
-
-#     "618": {
-#         "Department": "Water Department Customer Service", 
-#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881", 
-#         "Contact": "Gabby Gardner, ggardner@mywinterhaven.com, 863-291-5678 x 3370",
-#     },
-
-#     "111": {
-#         "Department": "Finance Department",
-#         "Location": "City Hall Annex - 451 3rd St NW, Winter Haven, FL 33881",
-#         "Contact": "Coleen \"CJ\" Scott (CFO), cjscott@mywinterhaven.com, 863-291-5667 x 2500" 
-#     }
-# }
-
-windowsKeys = {
-    "1": {
-        "name": "Windows 11",
-        "key": "MVHNP-G8632-B482B-QDW8D-QRR8R"
-    },
-    "2": {
-        "name": "Windows 10",
-        "key": "MVHNP-G8632-B482B-QDW8D-QRR8R"
-    },
-    "3": {
-        "name": "Windows 8.1",
-        "key": "MPXWC-7CN4B-64FCB-9T69B-F9BDQ"
-    },
-    "4": {
-        "name": "Windows 7",
-        "key": "YTH8H-3VJ37-T3RVT-YH7HG-KCVPD"
-    }
-}
-
 def displayTroubleshootingMenu():
     clearScreen()
     print("Troubleshooting")
@@ -175,8 +105,7 @@ def displayTroubleshootingMenu():
     for k, v in troubleshooting.items():
         print(f"{k}) {v['title']}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the issue number or type part of the issue name)")
+    print("\n(You can enter the issue number or type part of the issue name)")
     choice = input("\nSelect an issue: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -376,11 +305,7 @@ costCenters = {
         "Department": "Fleet Maintenance", 
         "Location": "2501 Motor Pool Road, Winter Haven, FL 33881",  #Need the location name
         "Contact": "Aaron Russel (Fleet Maintenance Manager), ", 
-
-    
-    # Will include mainline and main person in contact 
-    }   
-
+    }
 }
 
 windowsKeys = {
@@ -414,12 +339,83 @@ def clearScreen():
 #wait for keypress
 def pause(msg="Press any key to continue..."):
     print(msg, end='', flush=True)
-    if msvcrt:
-        msvcrt.getch()
-    else:
-        # for some reason it wouldnt work without a fallback
-        input()
+    msvcrt.getch()
     print()
+
+def globalSearch(search_query):
+    """
+    Search across all items in all menus using fuzzy matching.
+    Returns a tuple: (item_type, item_id) or (None, None) if not found.
+    item_type can be: 'cost_center', 'windows_key', 'guide', 'troubleshooting'
+    """
+    if not search_query or not search_query.strip():
+        return None, None
+    
+    search_query = search_query.strip().lower()
+    all_items = []
+    
+    # Add cost centers
+    for cc_id, cc_data in costCenters.items():
+        dept = cc_data.get('Department', '')
+        all_items.append({
+            'type': 'cost_center',
+            'id': cc_id,
+            'search_text': dept.lower(),
+            'display_name': dept
+        })
+    
+    # Add Windows keys
+    for key_id, key_data in windowsKeys.items():
+        name = key_data.get('name', '')
+        all_items.append({
+            'type': 'windows_key',
+            'id': key_id,
+            'search_text': name.lower(),
+            'display_name': name
+        })
+    
+    # Add guides
+    for guide_id, guide_data in guides.items():
+        title = guide_data.get('title', '')
+        all_items.append({
+            'type': 'guide',
+            'id': guide_id,
+            'search_text': title.lower(),
+            'display_name': title
+        })
+    
+    # Add troubleshooting
+    for issue_id, issue_data in troubleshooting.items():
+        title = issue_data.get('title', '')
+        all_items.append({
+            'type': 'troubleshooting',
+            'id': issue_id,
+            'search_text': title.lower(),
+            'display_name': title
+        })
+    
+    # Use fuzzy matching to find the best match
+    choices = [item['search_text'] for item in all_items]
+    result = process.extractOne(search_query, choices, scorer=fuzz.WRatio)
+    
+    if result and result[1] >= 60:  # Minimum score of 60
+        matched_text = result[0]
+        for item in all_items:
+            if item['search_text'] == matched_text:
+                return item['type'], item['id']
+    
+    return None, None
+
+def displayStartupMenu():
+    """Display the initial menu with two options: navigate or search"""
+    clearScreen()
+    print("SKUNKIPEDIA")
+    print("=" * 10)
+    print("1) Navigate Menus")
+    print("2) Search (Type what you're looking for)")
+    print("0) Exit")
+    choice = input("\nSelect an option: ").strip()
+    return choice
 
 def displayHome():
     clearScreen()
@@ -470,8 +466,7 @@ def displayMainMenu():
     print("3) Guides")
     print("4) Troubleshooting")
     print("0) Exit")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the option number or type part of the menu name)")
+    print("\n(You can enter the option number or type part of the menu name)")
     choice = input("\nSelect an option: ").strip()
     # Use fuzzy matching for main menu
     main_menu_options = {
@@ -495,8 +490,7 @@ def displayCostCenters():
         dept = costCenters[cc]["Department"]
         print(f"{cc}) {dept}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the cost center number or type part of the department name)")
+    print("\n(You can enter the cost center number or type part of the department name)")
     choice = input("\nEnter cost center number: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -524,8 +518,7 @@ def displayActivationKeyMenu():
     for k, v in windowsKeys.items():
         print(f"{k}) {v['name']}")
     print("0) Back")
-    if FUZZYWUZZY_AVAILABLE:
-        print("\n(You can enter the option number or type part of the Windows version name)")
+    print("\n(You can enter the option number or type part of the Windows version name)")
     choice = input("\nSelect an option: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
@@ -544,43 +537,88 @@ def showActivationKey(version):
     print(f"{key_info['name']} Activation Key")
     print("=" * (len(key_info['name']) + 16))
     print(key_info['key'])
-    if CLIPBOARD_AVAILABLE:
-        pyperclip.copy(key_info['key'])
-        print(f"\n[{key_info['name']} key has been copied to the clipboard.]\n")
+    pyperclip.copy(key_info['key'])
+    print(f"\n[{key_info['name']} key has been copied to the clipboard.]\n")
     print()
     pause()
 
 def main():
     displayHome()
     while True:
-        choice = displayMainMenu()
-        if choice == "1":
+        startup_choice = displayStartupMenu()
+        
+        if startup_choice == "1":
+            # Navigate menus (existing functionality)
             while True:
-                costCenterChoice = displayCostCenters()
-                if costCenterChoice  == "0":
-                    break
-                showCostCenter(costCenterChoice)
-        elif choice == "2":
-            while True:
-                version = displayActivationKeyMenu()
-                if version == "0":
-                    break
-                showActivationKey(version)
-        elif choice == "3":
-            # Guides submenu
-            while True:
-                guideChoice = displayGuidesMenu()
-                if guideChoice == "0":
-                    break
-                showGuide(guideChoice)
-        elif choice == "4":
-            # Troubleshooting submenu
-            while True:
-                troubleshootChoice = displayTroubleshootingMenu()
-                if troubleshootChoice == "0":
-                    break
-                showTroubleshooting(troubleshootChoice)
-        elif choice == "0":
+                choice = displayMainMenu()
+                if choice == "1":
+                    while True:
+                        costCenterChoice = displayCostCenters()
+                        if costCenterChoice  == "0":
+                            break
+                        showCostCenter(costCenterChoice)
+                elif choice == "2":
+                    while True:
+                        version = displayActivationKeyMenu()
+                        if version == "0":
+                            break
+                        showActivationKey(version)
+                elif choice == "3":
+                    # Guides submenu
+                    while True:
+                        guideChoice = displayGuidesMenu()
+                        if guideChoice == "0":
+                            break
+                        showGuide(guideChoice)
+                elif choice == "4":
+                    # Troubleshooting submenu
+                    while True:
+                        troubleshootChoice = displayTroubleshootingMenu()
+                        if troubleshootChoice == "0":
+                            break
+                        showTroubleshooting(troubleshootChoice)
+                elif choice == "0":
+                    break  # Go back to startup menu
+                else:
+                    print("Invalid selection. Please try again.")
+                    time.sleep(1)
+        
+        elif startup_choice == "2":
+            # Global search
+            clearScreen()
+            print("SKUNKIPEDIA - Global Search")
+            print("=" * 28)
+            print("Type what you're looking for (e.g., 'Windows 8', 'finance', 'security stack')")
+            print("Or type '0' to go back")
+            search_query = input("\nSearch: ").strip()
+            
+            if search_query == "0":
+                continue
+            
+            if not search_query:
+                print("Please enter a search term.")
+                pause()
+                continue
+            
+            item_type, item_id = globalSearch(search_query)
+            
+            if item_type and item_id:
+                # Navigate directly to the found item
+                if item_type == 'cost_center':
+                    showCostCenter(item_id)
+                elif item_type == 'windows_key':
+                    showActivationKey(item_id)
+                elif item_type == 'guide':
+                    showGuide(item_id)
+                elif item_type == 'troubleshooting':
+                    showTroubleshooting(item_id)
+            else:
+                clearScreen()
+                print(f"No match found for '{search_query}'")
+                print("Try a different search term or use the menu navigation.")
+                pause()
+        
+        elif startup_choice == "0":
             clearScreen()
             print("Goodbye!")
             time.sleep(0.5)
