@@ -379,7 +379,7 @@ costCenters = {
 
     
     # Will include mainline and main person in contact 
-        
+    }   
 
 }
 
@@ -407,7 +407,9 @@ windowsKeys = {
 }
 
 def clearScreen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    import subprocess
+    subprocess.run(['cls'] if os.name == 'nt' else ['clear'], shell=True)
+    #os.system('cls' if os.name == 'nt' else 'clear') <- revert in case changes don't work
 
 #wait for keypress
 def pause(msg="Press any key to continue..."):
@@ -453,7 +455,7 @@ def displayHome():
     """
     print(banner)
     print("Welcome to SKUNKIPEDIA!")
-    print("\nA quick-reference IT dictionary.\n")
+    print("\nA quick-reference IT Knowledge Base.\n")
     print(bigfoot)
     print()
     pause()
@@ -489,7 +491,7 @@ def displayCostCenters():
     clearScreen()
     print("Cost Centers")
     print("=" * 12)
-    for cc in costCenters:
+    for cc in sorted(costCenters.keys()):
         dept = costCenters[cc]["Department"]
         print(f"{cc}) {dept}")
     print("0) Back")
