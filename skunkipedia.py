@@ -28,21 +28,42 @@ def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=6
     # First, try exact key match (for backward compatibility with numbers)
     if user_input in options_dict:
         return user_input
+
+    #Convert search_field to list if it's a string
+    if isinstance(search_field, str):
+        search_fields = [search_field]
+    elif isinstance(search_field, list):
+        search_fields = search_field
+    else:
+        search_fields = [str(search_field)]
     
     # Build a list of searchable strings with their corresponding keys
     search_items = []
     for key, value in options_dict.items():
-        if isinstance(value, dict) and search_field in value:
-            search_text = value[search_field]
+        if isinstance(value, dict):
+            #Find text from each field in search_fields
+            search_texts = []
+            for field in search_fields:
+                if field in value:
+                    field_text = value[field]
+                    #Making sure field text is not none or empty string
+                    if field_text and str(field_text).strip(): 
+                        search_texts.append(str(field_text).lower())
+            if search_texts:
+                combined_text = " ".join(search_texts)
+                search_items.append((key, combined_text))
         elif isinstance(value, str):
-            search_text = value
+            search_items.append((key, value.lower()))
         else:
-            search_text = str(value)
-        search_items.append((key, search_text))
+            search_items.append((key, str(value).lower()))
+
+    #Checking to see if we have search items 
+    if not search_items:
+        return None
     
     # Use process.extractOne to find the best match
     choices = [item[1] for item in search_items]
-    result = process.extractOne(user_input, choices, scorer=fuzz.WRatio)
+    result = process.extractOne(user_input.lower(), choices, scorer=fuzz.WRatio)
     
     if result and result[1] >= min_score:
         # Find the key corresponding to the matched text
@@ -548,7 +569,8 @@ def displayCostCenters():
     choice = input("\nEnter cost center number: ").strip()
     # Use fuzzy matching if not "0" (back)
     if choice != "0":
-        matched = fuzzyMatchChoice(choice, costCenters, search_field='Department')
+        matched = fuzzyMatchChoice(choice, costCenters, 
+            search_field=['Department', 'Location', 'Contact'])
         if matched:
             return matched
     return choice
