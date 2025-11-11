@@ -3,6 +3,7 @@ import sys
 import time
 import msvcrt
 import pyperclip
+import getpass
 from thefuzz import fuzz, process
 
 def fuzzyMatchChoice(user_input, options_dict, search_field='title', min_score=60):
@@ -126,6 +127,50 @@ def showTroubleshooting(issue_id):
     print(issue['content'])
     print()
     pause()
+
+def promptLogin():
+    clearScreen()
+    print("Skunkipedia - Login")
+    print("=" * 10)
+    
+    VALID_USERS = {
+        "admin": "password",
+        "user": "password123"
+    }
+
+    max_attempts = 3
+    attempts = 0
+
+    while attempts < max_attempts:
+        username = input("Enter your username: ").strip()
+        # Password exposed while typing:
+        # password = input("Enter your password: ").strip()
+
+        # Password hidden while typing:
+        password = getpass.getpass("Enter your password: ")
+
+        if not username or not password:
+            print("Username and password are required.")
+            time.sleep(1)
+            attempts += 1
+            continue
+
+        if username in VALID_USERS and VALID_USERS[username] == password:
+            print("Login successful!")
+            time.sleep(1)
+            return username
+        else: 
+            attempts += 1
+            remaining = max_attempts - attempts
+            if remaining > 0: 
+                print(f"Invalid credentials. {remaining} attempts remaining.")
+                time.sleep(1)
+            else:
+                print("Maximum login attempts exceeded, Exiting...")
+                time.sleep(1)
+                return None
+
+    return None
 
 costCenters = {
     "728": {
@@ -418,6 +463,13 @@ def displayStartupMenu():
     return choice
 
 def displayHome():
+    username = promptLogin()
+
+    if username is None:
+        print("Login failed. Exiting...")
+        time.sleep(1)
+        sys.exit(0)
+    
     clearScreen()
     banner = r"""
  _____ _                _    _                _ _       
@@ -455,6 +507,8 @@ def displayHome():
     print(bigfoot)
     print()
     pause()
+
+    return username
 
 def displayMainMenu():
     #main menu options
@@ -543,7 +597,7 @@ def showActivationKey(version):
     pause()
 
 def main():
-    displayHome()
+    username = displayHome()
     while True:
         startup_choice = displayStartupMenu()
         
